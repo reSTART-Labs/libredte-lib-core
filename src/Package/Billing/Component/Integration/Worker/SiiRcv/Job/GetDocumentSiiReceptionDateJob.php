@@ -89,7 +89,7 @@ class GetDocumentSiiReceptionDateJob extends AbstractJob implements JobInterface
                 $number,
                 $company,
                 $e->getMessage()
-            ));
+            ), code: $e->getCode(), previous: $e, request: $request);
         }
 
         $response = $this->xmlService->decode($xmlResponse);

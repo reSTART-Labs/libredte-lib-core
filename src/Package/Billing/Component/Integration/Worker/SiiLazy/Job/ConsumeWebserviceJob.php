@@ -27,6 +27,7 @@ namespace libredte\lib\Core\Package\Billing\Component\Integration\Worker\SiiLazy
 use Derafu\Backbone\Abstract\AbstractJob;
 use Derafu\Backbone\Attribute\Job;
 use Derafu\Backbone\Contract\JobInterface;
+use Derafu\Support\Encoding;
 use Derafu\Xml\Contract\XmlDocumentInterface;
 use Derafu\Xml\Contract\XmlServiceInterface;
 use Derafu\Xml\XmlDocument;
@@ -249,7 +250,10 @@ class ConsumeWebserviceJob extends AbstractJob implements JobInterface
         // Si la respuesta es un objeto stdClass, se convierte a un array y
         // luego se convierte a XML en un XmlDocument que se pueda retornar.
         if (is_object($responseBody) && get_class($responseBody) === 'stdClass') {
-            $responseBody = json_decode(json_encode($responseBody), true);
+            $responseBody = Encoding::utf8encode($responseBody);
+            $responseBody = [
+                'return' => json_decode(json_encode($responseBody), true),
+            ];
             return $this->xmlService->encode($responseBody);
         }
 

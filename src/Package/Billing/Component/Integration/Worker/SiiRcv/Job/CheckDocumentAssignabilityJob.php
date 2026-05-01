@@ -89,7 +89,7 @@ class CheckDocumentAssignabilityJob extends AbstractJob implements JobInterface
                 $number,
                 $company,
                 $e->getMessage()
-            ));
+            ), code: $e->getCode(), previous: $e, request: $request);
         }
 
         return new CheckDocumentAssignabilityResponse(
