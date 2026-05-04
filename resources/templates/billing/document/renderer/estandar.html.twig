@@ -6,7 +6,6 @@
             height: 100%;
         }
         body {
-            margin-top: 5px;
             font-family: Arial, sans-serif;
             font-size: 10pt;
             height: 100%;
@@ -46,9 +45,12 @@
         }
         {# Información del Emisor #}
         .emisor-info {
+            font-weight: bold;
             float: left;
-            width: 60%;
+            width: 50%;
             text-align: left;
+            font-size: 7pt;
+            line-height: 1;
         }
         .emisor-logo {
             max-width: 30mm;
@@ -62,13 +64,14 @@
         .emisor-giro {
             color: black;
             font-weight: bold;
-            font-size: 9pt;
         }
         .emisor-direccion {
             color: black;
         }
         {# Información del DTE #}
         .container-dte {
+            float:right;
+            width: 45%;
             text-align: center;
             color: rgb(255, 0, 0);
             font-weight: bold;
@@ -129,12 +132,12 @@
             table-layout: fixed;
         }
         .tabla-receptor td {
-            padding: 2px 5px;
             border: none;
             text-align: left;
             line-height: 1;
             word-wrap: break-word;
             white-space: normal;
+            padding: 2px 0;
         }
         {# Tabla montos globales #}
         .tabla-montos-global {
@@ -266,10 +269,34 @@
             font-weight: bold;
             margin-left: auto;
         }
+        footer{
+            position: fixed;
+            bottom: -30 mm;
+            left: -15mm;
+            width: 230mm;
+            font-weight: bold;
+            font-size: 8pt;
+            border-top: 1px solid #000;
+            margin: 0;
+        }
+        .container-footer{
+            display: table;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .footer-text{
+            float: left;
+            width: 50%;
+            text-align:left;
+        }
+        .footer-link{
+            width: 20%;
+            text-align:right;
+        }
         @media print {
             @page {
-                size: 216mm 279mm;
-                margin: 15mm;
+                size: 216mm 260mm;
+                margin: 5mm;
             }
             .container-dte {
                 display: flex;
@@ -292,18 +319,9 @@
             .img-timbre {
                 width: 60mm;
             }
-            footer {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                text-align: center;
-                font-weight: bold;
-                font-size: 8pt;
-                border-top: 1px solid #000;
-                padding: 5px 0;
-                margin: 0;
-                background-color: #fff;
+            .footer-link{
+                width: 43%;
+                text-align:right;
             }
         }
         @media screen {
@@ -340,19 +358,6 @@
             .img-timbre {
                 width: auto;
             }
-            footer {
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                text-align: center;
-                font-weight: bold;
-                font-size: 8pt;
-                border-top: 1px solid #000;
-                padding: 5px 0;
-                margin: 0;
-                background-color: #fff;
-                padding-top: 5px;
-            }
         }
     </style>
 </head>
@@ -380,6 +385,11 @@
                         | filter(v => v is not empty)
                         | join(', ')
                     }}
+                </p>
+                {# Correo del Emisor #}
+                <p class="emisor-correo">
+                    {{ document.Encabezado.Emisor.CorreoEmisor
+                        | default(document.Encabezado.Emisor.CorreoEmisor) }}
                 </p>
             </div>
             <div class="container-dte">
@@ -412,7 +422,8 @@
                         {# Información del Receptor #}
                         {% if document.Encabezado.Receptor.RUTRecep != '66666666-6' %}
                             <tr>
-                                <td class="label">R.U.T.:</td>
+                                <td class="bold">R.U.T.</td>
+                                <td>:</td>
                                 <td>
                                     {{ document.Encabezado.Receptor.RUTRecep
                                         | format_as('billing_document.RUTRecep') }}
@@ -422,7 +433,8 @@
                         {# Razón Social #}
                         {% if document.Encabezado.Receptor.RznSocRecep is not empty %}
                             <tr>
-                                <td class="label">Razón Social:</td>
+                                <td class="bold">Razón Social</td>
+                                <td>:</td>
                                 <td>
                                     {{ document.Encabezado.Receptor.RznSocRecep }}
                                 </td>
@@ -431,7 +443,8 @@
                         {# Giro #}
                         {% if document.Encabezado.Receptor.GiroRecep is not empty %}
                         <tr>
-                            <td class="label">Giro:</td>
+                            <td class="bold">Giro</td>
+                                <td>:</td>
                             <td>
                                 {{ document.Encabezado.Receptor.GiroRecep }}
                             </td>
@@ -440,7 +453,8 @@
                         {# Dirección #}
                         {% if document.Encabezado.Receptor.DirRecep is not empty %}
                             <tr>
-                                <td class="label">Dirección:</td>
+                                <td class="bold">Dirección</td>
+                                <td>:</td>
                                 <td>
                                     {{
                                         [
@@ -457,7 +471,8 @@
                         {# Tipo de Operación #}
                         {% if document.Encabezado.IdDoc.IndTraslado is not empty %}
                             <tr>
-                                <td class="label">Tipo oper.:</td>
+                                <td class="bold">Tipo oper.</td>
+                                <td>:</td>
                                 <td>
                                     {{ document.Encabezado.IdDoc.IndTraslado
                                         | format_as('billing_document.IndTraslado') }}
@@ -467,7 +482,8 @@
                         {# Traslado #}
                         {% if document.Encabezado.Transporte is not empty %}
                             <tr>
-                                <td class="label">Traslado:</td>
+                                <td class="bold">Traslado</td>
+                                <td>:</td>
                                 <td>
                                     A {{
                                         [
@@ -493,7 +509,8 @@
                         {# Transporte #}
                         {% if document.Encabezado.Transporte.Aduana.CodViaTransp is not empty %}
                             <tr>
-                                <td class="label">Traslado:</td>
+                                <td class="bold">Traslado</td>
+                                <td>:</td>
                                 <td>
                                     {{ document.Encabezado.Transporte.Aduana.CodViaTransp
                                         | format_as('billing_document.CodViaTransp') }}
@@ -503,7 +520,8 @@
                         {# País receptor #}
                         {% if document.Encabezado.Transporte.Aduana.CodPaisRecep is not empty %}
                             <tr>
-                                <td class="label">P. receptor:</td>
+                                <td class="bold">P. receptor</td>
+                                <td>:</td>
                                 <td>
                                     {{ document.Encabezado.Transporte.Aduana.CodPaisRecep
                                         | format_as('billing_document.CodPaisRecep') }}
@@ -513,14 +531,16 @@
                         {# Total bultos #}
                         {% if document.Encabezado.Transporte.Aduana.TotBultos is not empty %}
                             <tr>
-                                <td class="label">Total bultos:</td>
+                                <td class="bold">Total bultos</td>
+                                <td>:</td>
                                 <td>{{ document.Encabezado.Transporte.Aduana.TotBultos }}</td>
                             </tr>
                         {% endif %}
                         {# Contacto #}
                         {% if document.Encabezado.Receptor.CorreoRecep is not empty or document.Encabezado.Receptor.Contacto is not empty %}
                             <tr>
-                                <td class="label">Contacto:</td>
+                                <td class="bold">Contacto</td>
+                                <td>:</td>
                                 <td>
                                     {{ document.Encabezado.Receptor.CorreoRecep }}
                                     {{ document.Encabezado.Receptor.Contacto }}
@@ -530,7 +550,8 @@
                         {# Nacionalidad #}
                         {% if document.Encabezado.Receptor.Extranjero.Nacionalidad is not empty %}
                             <tr>
-                                <td class="label">Nacionalidad:</td>
+                                <td class="bold">Nacionalidad</td>
+                                <td>:</td>
                                 <td>
                                     {{ document.Encabezado.Receptor.Extranjero.Nacionalidad
                                         | format_as('billing_document.Nacionalidad') }}
@@ -540,7 +561,8 @@
                         {# Cód. recep #}
                         {% if document.Encabezado.Receptor.CdgIntRecep is not empty %}
                             <tr>
-                                <td class="label">Cód. recep.:</td>
+                                <td class="bold">Cód. recep.</td>
+                                <td>:</td>
                                 <td>
                                     {{ document.Encabezado.Receptor.CdgIntRecep }}
                                 </td>
@@ -550,7 +572,8 @@
                         {% if document.Referencia is not empty %}
                             {% for referencia in document.Referencia %}
                             <tr>
-                                <td class="label">Referencia:</td>
+                                <td class="bold">Referencia</td>
+                                <td>:</td>
                                 <td>
                                     {{ loop.index }} -
                                     {% if referencia.TpoDocRef is not empty %}
@@ -920,7 +943,7 @@
                                     {% for impuesto in document.Encabezado.Totales.ImptoReten %}
                                     <tr>
                                         <td>
-                                            {{ impuesto.TipoImp }} ({{ impuesto.TasaImp }}%):
+                                            {{ impuesto.TipoImp | format_as('billing_document.TipoImp') }} ({{ impuesto.TasaImp }}%):
                                         </td>
                                         <td>
                                             {% if otraMoneda %}
@@ -1008,10 +1031,16 @@
         {% endif %}
         {# Footer #}
         <footer>
-            Boletas y facturas generadas con LibreDTE -
-            <a href="https://www.libredte.cl" style="text-decoration: none; color: inherit;" target="_blank">
-                www.libredte.cl
-            </a>
+            <div class="container-footer">
+                <div class="footer-text">
+                    Boletas y facturas generadas con LibreDTE
+                </div>
+                <div class="footer-link">
+                    <a href="https://www.libredte.cl" style="text-decoration: none; color: inherit;" target="_blank">
+                        www.libredte.cl
+                    </a>
+                </div>
+            </div>
         </footer>
     </body>
 </html>
