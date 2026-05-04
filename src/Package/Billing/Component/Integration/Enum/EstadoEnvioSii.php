@@ -139,4 +139,24 @@ enum EstadoEnvioSii: string
     {
         return $this === self::RECHAZADO || $this === self::REPARO;
     }
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::ENVIADO   => 'Enviado',
+            self::ACEPTADO  => 'Aceptado',
+            self::REPARO    => 'Con reparos',
+            self::RECHAZADO => 'Rechazado',
+        };
+    }
+
+    public function colorClass(): string
+    {
+        return match ($this) {
+            self::ENVIADO   => 'text-bg-secondary',
+            self::ACEPTADO  => 'text-bg-success',
+            self::REPARO    => 'text-bg-warning',
+            self::RECHAZADO => 'text-bg-danger',
+        };
+    }
 }
