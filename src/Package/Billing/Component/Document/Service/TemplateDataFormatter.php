@@ -40,7 +40,7 @@ use libredte\lib\Core\Package\Billing\Component\Document\Entity\ImpuestoAdiciona
 use libredte\lib\Core\Package\Billing\Component\Document\Entity\MedioPago;
 use libredte\lib\Core\Package\Billing\Component\Document\Entity\TagXml;
 use libredte\lib\Core\Package\Billing\Component\Document\Entity\Traslado;
-use TCPDF2DBarcode;
+use Com\Tecnick\Barcode\Barcode;
 
 /**
  * Servicio para traducir los datos de los documentos a su representación para
@@ -150,8 +150,8 @@ class TemplateDataFormatter extends AbstractHandlerFormatter
             ),
             //  Timbre Electrónico del Documento (TED).
             'TED' => function (string $timbre) {
-                $pdf417 = new TCPDF2DBarcode($timbre, 'PDF417,,5');
-                $png = $pdf417->getBarcodePngData(1, 1, [0,0,0]);
+                $pdf417 = (new Barcode())->getBarcodeObj('PDF417,,5', $timbre);
+                $png = $pdf417->getPngData(false);
                 return 'data:image/png;base64,' . base64_encode($png);
             },
             // Montos sin decimales y formato de Chile en separadores.

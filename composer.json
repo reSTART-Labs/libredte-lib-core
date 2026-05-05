@@ -54,7 +54,7 @@
         "symfony/mime": "^8.0",
         "phpseclib/phpseclib": "^3.0",
         "psr/simple-cache": "^3.0",
-        "tecnickcom/tcpdf": "^6.11"
+        "tecnickcom/tc-lib-pdf": "^8.13"
     },
     "require-dev": {
         "ext-xdebug": "*",
