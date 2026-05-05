@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace libredte\lib\Core\Package\Billing\Component\Document\Service;
 
+use Com\Tecnick\Barcode\Barcode;
 use Derafu\Enum\Currency;
 use Derafu\L10n\Cl\Rut\Rut;
 use Derafu\Renderer\Abstract\AbstractHandlerFormatter;
@@ -40,7 +41,6 @@ use libredte\lib\Core\Package\Billing\Component\Document\Entity\ImpuestoAdiciona
 use libredte\lib\Core\Package\Billing\Component\Document\Entity\MedioPago;
 use libredte\lib\Core\Package\Billing\Component\Document\Entity\TagXml;
 use libredte\lib\Core\Package\Billing\Component\Document\Entity\Traslado;
-use Com\Tecnick\Barcode\Barcode;
 
 /**
  * Servicio para traducir los datos de los documentos a su representación para
