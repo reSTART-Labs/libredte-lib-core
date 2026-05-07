@@ -96,7 +96,7 @@
         {# Información Receptor y Fechas #}
         .receptor-info {
             float: left;
-            width: 70%;
+            width: 68%;
         }
         .fechas {
             float: right;
@@ -597,7 +597,7 @@
                                         N°{{ referencia.FolioRef }}
                                     {% endif %}
                                     {% if referencia.FchRef is not empty %}
-                                        del {{ referencia.FchRef | format_as('billing_document.FchRef') }}
+                                        del {{ referencia.FchRef }}
                                     {% endif %}
                                     {% if referencia.RazonRef is not empty %}
                                         : {{ referencia.RazonRef }}
