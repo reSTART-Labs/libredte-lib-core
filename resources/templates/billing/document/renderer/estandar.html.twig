@@ -109,7 +109,7 @@
             font-size: 10pt;
             border: 1px solid black;
         }
-        .tabla-detalles th, td {
+        .tabla-detalles th, .tabla-detalles td {
             white-space: nowrap;
             padding: 2px;
             border-left: 1px solid black;
@@ -117,7 +117,6 @@
             text-align: center;
         }
         .tabla-detalles th {
-            background-color: #f2f2f2;
             text-align: left;
             font-weight: bold;
             border-bottom: 1px solid black;
@@ -156,28 +155,31 @@
         {# Tabla de montos -#}
         .tabla-montos {
             border: none;
-            width: 80%;
-            font-size: 11pt;
+            width: 100%;
+            font-size: 13px;
             border-collapse: collapse;
+            text-align: right;
             margin-left: auto;
+            padding-right: 0%;
         }
         .tabla-montos td {
             white-space: normal;
             font-weight: bold;
-            padding: 2px 5px;
             border: none;
             text-align: right;
-        }
-        .tabla-montos td:nth-child(2) {
-            width: 40%;
         }
         {# Tabla timbre#}
         .tabla-timbre {
             margin-right: auto;
             border-collapse: collapse;
+            text-align: center;
+            width: 100%;
+            height: 100%;
         }
         .tabla-timbre td {
-            border: none;
+                text-align:center;
+                padding: 0;
+                line-height: 0.9;
         }
         .tabla-timbre .timbre-text {
             font-size: 10pt;
@@ -187,16 +189,13 @@
         .tabla-timbre .img-timbre {
             margin: 0;
             padding: 0;
-            height: auto;
         }
         {# Tabla Bottom Element #}
         .tabla-bottom-element {
             width: 100%;
             border-collapse: collapse;
-            position: relative;
-            margin-top: auto;
-            bottom: 0;
             table-layout: fixed;
+            flex: 1;
         }
         .tabla-bottom-element > tbody > tr {
             height: 100%;
@@ -207,12 +206,16 @@
         }
         .tabla-bottom-element-cell {
             width: 33%;
+            height: 100%;
             vertical-align: top;
         }
         .tabla-bottom-element-cell table {
+            max-height: 100%;
+            height: 100%;
             max-height: auto;
             overflow: hidden;
             border-collapse: collapse;
+            width: 100%;
         }
         {# Estilo de montos #}
         .montos {
@@ -269,16 +272,6 @@
             font-weight: bold;
             margin-left: auto;
         }
-        footer{
-            position: fixed;
-            bottom: -30 mm;
-            left: -15mm;
-            width: 230mm;
-            font-weight: bold;
-            font-size: 8pt;
-            border-top: 1px solid #000;
-            margin: 0;
-        }
         .container-footer{
             display: table;
             justify-content: space-between;
@@ -305,12 +298,12 @@
                 padding: 1.5mm;
                 margin: 0;
             }
-            .informacion-bottom {
+            .container-informacion-bottom {
                 position: absolute;
-                bottom: 30px;
-                left: 15mm;
-                right: 15mm;
-                width: auto;
+                bottom: 0;
+                left: 0;
+                width: 98%;
+                min-height: 150px;
             }
             .container-cedible {
                 position: fixed;
@@ -318,6 +311,7 @@
             }
             .img-timbre {
                 width: 60mm;
+                height: 35mm;
             }
             footer {
                 position: absolute;
@@ -364,13 +358,6 @@
                 margin-top: 10px;
                 font-size: 10pt;
                 color: rgb(255, 0, 0);
-            }
-            .informacion-bottom {
-                margin: 8px 0;
-                width: 100%;
-            }
-            .img-timbre {
-                width: auto;
             }
         }
     </style>
@@ -640,7 +627,7 @@
                 {% endif %}
                 {# Vendedor -#}
                 {% if document.Encabezado.Emisor.CdgVendedor is not empty %}
-                    <p>Venta: {{ document.Encabezado.Emisor.CdgVendedor }}</p>
+                    <p>Vendedor: {{ document.Encabezado.Emisor.CdgVendedor }}</p>
                 {% endif %}
             </div>
         </div>
@@ -811,7 +798,7 @@
             </p>
         </div>
         {% endif %}
-        <div class="container informacion-bottom" {% if acuse_recibo is empty %}style="bottom: 130px;"{% endif %}>
+        <div class="container-informacion-bottom"{% if acuse_recibo is empty %}style="bottom: 130px;"{% endif %}>
             <table class="tabla-bottom-element">
                 <tr>
                     <td class="tabla-bottom-element-cell">
@@ -839,9 +826,9 @@
                             </table>
                         {% endif %}
                     </td>
-                    <td class="tabla-bottom-element-cell">
+                    {% if acuse_recibo is not empty %}
+                        <td class="tabla-bottom-element-cell">
                         {# Acuse de Recibo -#}
-                        {% if acuse_recibo is not empty %}
                             <table class="acuse-recibo">
                                 <tr>
                                     <td colspan="2" class="acuse-title">Acuse de recibo</td>
@@ -870,8 +857,8 @@
                             <p class="acuse-recibo-label">
                                 El acuse de recibo que se declara en este acto, de acuerdo a lo dispuesto en la letra b) del Art.4°, y la letra c) del Art. 5° de la Ley 19.983, acredita que la entrega de mercaderías o servicio(s) prestado(s) ha(n) sido recibido(s).
                             </p>
-                        {% endif %}
-                    </td>
+                        </td>
+                    {% endif %}
                     <td class="tabla-bottom-element-cell">
                         {# Montos #}
                         <table class="tabla-montos">
@@ -956,7 +943,7 @@
                                 {% if document.Encabezado.Totales.ImptoReten is not empty %}
                                     {% for impuesto in document.Encabezado.Totales.ImptoReten %}
                                     <tr>
-                                        <td>
+                                        <td >
                                             {{ impuesto.TipoImp | format_as('billing_document.TipoImp') }} ({{ impuesto.TasaImp }}%):
                                         </td>
                                         <td>
